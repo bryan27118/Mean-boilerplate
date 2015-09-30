@@ -22,7 +22,6 @@ myApp.controller('AppCtrl', ['$scope','$http', function($scope, $http){
 
 	$scope.marktaskdone = function(id){
 		$http.post('/api/todolist/edittask/markdone/' + id).success(function(res){
-			console.log(res);
 			$scope.todolist = res;
 			refresh();
 		});
