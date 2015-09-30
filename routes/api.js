@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Task = require("../models/Task").Task;
 
-module.exports = function(db,mongojs){
+module.exports = function(){
 	router.get('/todolist',function(req, res){
 		Task.find({}, function(err, docs){
 			res.json(docs);
