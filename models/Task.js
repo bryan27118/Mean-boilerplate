@@ -7,6 +7,4 @@ var TaskSchema = new mongoose.Schema({
 
 var Task = mongoose.model('Task', TaskSchema);
 
-module.exports = {
-  Task: Task
-}
+module.exports = Task;

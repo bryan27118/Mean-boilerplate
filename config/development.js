@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  db: 'mongodb://' + (process.env.OPENSHIFT_NODEJS_IP || 'localhost') + '/todolist',
+  db: 'mongodb://' + (process.env.OPENSHIFT_NODEJS_IP || 'localhost') + '/mean-dev',
   debug: true,
   logging: {
     format: 'tiny'
@@ -13,7 +13,8 @@ module.exports = {
   },
   hostname: 'http://localhost:3000',
   app: {
-    name: 'MEAN - A Modern Stack - Development'
+    name: 'MEAN Boilerplate - Development',
+    author: 'Bryan C.'
   },
   strategies: {
     local: {

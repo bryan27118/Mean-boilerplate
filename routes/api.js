@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var Task = require("../models/Task").Task;
+var Task = require("../models/Task");
+
+router.post('/user', function(req, res) {
+  res.json(req.user);
+});
 
 router.get('/todolist',function(req, res){
 	Task.find({}, function(err, docs){
@@ -21,6 +25,7 @@ router.post('/todolist/addtask',function(req, res){
 
 router.delete('/todolist/removetask/:id',function(req, res){
 	var id = req.params.id;
+	
 	Task.remove({_id: id}, function(err, doc){
 		res.json(doc);
 	});

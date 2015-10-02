@@ -1,0 +1,10 @@
+<div class="col-lg-6 col-lg-offset-3">
+  <h2>Login</h2>
+  <div ng-if="loginError.length &gt; 0" class="alert alert-danger">{{loginError}}</div>
+  <form ng-submit="login()">
+    <input required="required" name="username" type="text" placeholder="Username" ng-model="user.username" class="form-control"/>
+    <input required="required" name="password" type="password" placeholder="Password" ng-model="user.password" class="form-control"/>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+  <p>Don't have an account?</p><a href="#/signup">Sign up</a>
+</div>

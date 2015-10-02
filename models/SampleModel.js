@@ -15,6 +15,4 @@ var ModelSchema = new mongoose.Schema({
 //var Model = require("../models/SampleModel").Model;
 var Model = mongoose.model('Model', ModelSchema);
 
-module.exports = {
-  Model: Model
-}
+module.exports = Model;
