@@ -55,6 +55,16 @@ angular.module('myApp').factory('Auth', ['$q', '$http', '$location', '$rootScope
                 return deferred.promise;
             }
 
+            if(creds.username.legnth < 3){
+                deferred.reject("Username too short.");
+                return deferred.promise;
+            }
+
+            if(creds.username.legnth > 8){
+                deferred.reject("Username too long.");
+                return deferred.promise;
+            }
+
             $http.post('/auth/signup', creds).success(function(user) {
                 if (user) {
                     $rootScope.authUser = user;
@@ -74,9 +84,9 @@ angular.module('myApp').factory('Auth', ['$q', '$http', '$location', '$rootScope
             $rootScope.authUser = null;
             var deferred = $q.defer();
 
-            $http.post('/auth/logout').success(function(user){
+            $http.post('/auth/logout').success(function(user) {
                 deferred.resolve(user);
-            }).error(function(err){
+            }).error(function(err) {
                 deferred.reject(err);
             });
 

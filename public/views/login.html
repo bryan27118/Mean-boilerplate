@@ -1,10 +1,22 @@
 <div class="col-lg-6 col-lg-offset-3">
   <h2>Login</h2>
   <div ng-if="loginError.length &gt; 0" class="alert alert-danger">{{loginError}}</div>
-  <form ng-submit="login()">
-    <input required="required" name="username" type="text" placeholder="Username" ng-model="user.username" class="form-control"/>
-    <input required="required" name="password" type="password" placeholder="Password" ng-model="user.password" class="form-control"/>
-    <button type="submit" class="btn btn-primary">Login</button>
+  <form ng-submit="login()" name="form" role="form">
+    <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+      <label for="username">Username:</label>
+      <input required name="username" type="text" placeholder="Username" ng-model="user.username" class="form-control"/>
+      <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+      <label for="password">Password</label>
+      <input required name="password" type="password" placeholder="Password" ng-model="user.password" class="form-control"/>
+      <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid || dataLoading">Login</button>
+      <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      <a href="/signup" class="btn btn-link">Sign Up</a>
+    </div>
+    
   </form>
-  <p>Don't have an account?</p><a href="#/signup">Sign up</a>
 </div>

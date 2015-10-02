@@ -10,3 +10,8 @@ thead td{
     font-size: 18px;
     line-height: 20px;
 }
+
+.ng-valid {
+    border-color: green;
+    outline-color: green;
+}

@@ -26,7 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-require('./passport.js')(passport); // pass passport for configuration
+//passport configuration
+require('./passport.js')(passport); 
 //Define routes
 app.use(require('./routes')(passport));
 
