@@ -34,6 +34,15 @@ app.controller('AuthController', ['$scope', '$location', 'Auth', '$routeParams',
             });
         }
 
+        $scope.logout = function() {
+            var promise = Auth.logout();
+            promise.then(function(status) { //Success
+                $location.path($location.path());
+            }, function(status) { //Failed
+
+            });
+        }
+
     }
 ]);
 
@@ -43,10 +52,18 @@ app.controller('NavbarController', ['$scope', '$location', 'Auth',
         $scope.logout = function() {
             var promise = Auth.logout();
             promise.then(function(status) { //Success
-                $location.path("/login");
+                $location.path('/');
             }, function(status) { //Failed
 
             });
+        }
+
+        $scope.isUser = function(){
+            return Auth.isUser();
+        }
+
+        $scope.isAdmin = function(){
+            return Auth.isAdmin();
         }
     }
 ]);
@@ -60,7 +77,7 @@ app.controller('MainController', ['$scope', 'Auth',
 app.controller('ToDoController', ['$scope', '$http',
     function($scope, $http) {
         var refresh = function() {
-            $http.get('/api/todolist').success(function(res) {
+            $http.get('/api/read/todo/all').success(function(res) {
                 $scope.todolist = res;
             });
         }
@@ -68,7 +85,7 @@ app.controller('ToDoController', ['$scope', '$http',
 
         $scope.addTask = function() {
             if ($scope.task.name != "") {
-                $http.post('/api/todolist/addtask', $scope.task).success(function(res) {
+                $http.post('/api/create/todo/task', $scope.task).success(function(res) {
                     $scope.task = "";
                     $scope.todolist = res;
                     refresh();
@@ -77,25 +94,87 @@ app.controller('ToDoController', ['$scope', '$http',
         };
 
         $scope.marktaskdone = function(id) {
-            $http.post('/api/todolist/edittask/markdone/' + id).success(function(res) {
+            $http.post('/api/update/todo/done/' + id).success(function(res) {
                 $scope.todolist = res;
                 refresh();
             });
         };
 
         $scope.marktasknotdone = function(id) {
-            $http.post('/api/todolist/edittask/marknotdone/' + id).success(function(res) {
+            $http.post('/api/update/todo/notdone/' + id).success(function(res) {
                 $scope.todolist = res;
                 refresh();
             });
         };
 
         $scope.removetask = function(id) {
-            $http.delete('/api/todolist/removetask/' + id).success(function(res) {
+            $http.delete('/api/delete/todo/' + id).success(function(res) {
                 $scope.todolist = res;
                 refresh();
             });
         };
 
+    }
+]);
+
+app.controller('AccountController', ['$scope', 'Auth', '$http',
+    function($scope, Auth, $http) {
+        $scope.currentTab = 0;
+        $scope.error = "";
+        $scope.success = "";
+        $scope.dataLoading = false;
+        $scope.user = {};
+        $scope.setTab = function(tab){
+            $scope.currentTab = tab;
+        }
+
+        $scope.updatePassword = function(){
+            $scope.error = "";
+            $scope.success = "";
+            
+            if($scope.user.newpassword != $scope.user.newrepassword){
+                $scope.error = "Passwords do not match";
+                return
+            }
+
+            $scope.dataLoading = true;
+            $http.post('/api/update/user/password', $scope.user).success(function(res) {
+                $scope.dataLoading = false;
+                if(res == 'true'){
+                    Auth.requestUser();
+                    $scope.success = "Password Updated";
+                }else{
+                    $scope.error = res;
+                }
+                $scope.user = {};
+            });
+        }
+
+        $scope.updateEmail = function(){
+            $scope.error = "";
+            $scope.success = "";
+            $scope.dataLoading = true;
+
+            $http.post('/api/update/user/email', $scope.user).success(function(res) {
+                $scope.dataLoading = false;
+                if(res == 'true'){
+                    Auth.requestUser();
+                    $scope.success = "Email Updated";
+                }else{
+                    $scope.error = res;
+                }
+                $scope.user = {};
+            });
+        }
+    }
+]);
+
+app.controller('AdminController', ['$scope', 'Auth',
+    function($scope, Auth) {
+        $scope.currentTab = 0;
+
+        $scope.setTab = function(tab){
+            $scope.currentTab = tab;
+        }
     }
 ]);

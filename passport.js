@@ -6,6 +6,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 // load up the user model
 var User = require('./models/User.js');
+var bcrypt = require('bcrypt-nodejs');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -17,7 +18,7 @@ module.exports = function(passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        console.log("Serialize id " + user._id + " and name " + user.name);
+        console.log("Serialized " + user.name);
         done(null, user._id);
     });
 
@@ -26,10 +27,9 @@ module.exports = function(passport) {
             _id: id
         }, function(err, user) {
             if (user != null) {
-                console.log("Found deserialized user with id " + id + " and name " + user.name);
+                //console.log("Deserialized " + user.name);
                 done(null, user);
             } else {
-                console.log("Did not find deserialized user with id " + id);
                 done(null, false);
             }
         });
@@ -59,7 +59,8 @@ module.exports = function(passport) {
                     return done(null, false);
                 } else {
                     console.log("Creating");
-
+                    var salt = bcrypt.genSaltSync(10);
+                    password = bcrypt.hashSync(password,salt);
                     //create
                     User.create({
                         name: username,
@@ -86,7 +87,6 @@ module.exports = function(passport) {
                 'name': username
             }, function(err, user) {
                 if (user) {
-                    console.log(user);
                     return user.checkPassword(password, done);
                 } else {
                     console.log('No user found with that name.');

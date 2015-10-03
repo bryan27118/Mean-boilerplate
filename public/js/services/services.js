@@ -8,7 +8,7 @@ angular.module('myApp').factory('Auth', ['$q', '$http', '$location', '$rootScope
         authService.requestUser = function() {
             var deferred = $q.defer();
             console.log("Requesting User");
-            $http.post('/api/user').success(function(user) {
+            $http.get('/api/read/user').success(function(user) {
                 if (user) {
                     $rootScope.authUser = user;
                 }
@@ -27,6 +27,14 @@ angular.module('myApp').factory('Auth', ['$q', '$http', '$location', '$rootScope
 
         authService.exists = function() {
             return $rootScope.authUser != null;
+        }
+
+        authService.isAdmin = function() {
+            return $rootScope.authUser.role == "admin";
+        }
+
+        authService.isUser = function() {
+            return $rootScope.authUser.role == "user";
         }
 
         authService.login = function(creds) {

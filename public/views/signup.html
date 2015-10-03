@@ -1,4 +1,4 @@
-<div class="col-lg-6 col-lg-offset-3">
+<div ng-if="$root.authUser == null" class="col-lg-6 col-lg-offset-3">
   <h2>Register</h2>
   <div ng-if="loginError.length &gt; 0" class="alert alert-danger">{{loginError}}</div>
   <form ng-submit="signup()" name="form" role="form">
@@ -33,4 +33,8 @@
       <a href="/login" class="btn btn-link">Cancel</a>
     </div>
   </form>
+</div>
+<div ng-if="$root.authUser != null" class="col-lg-6 col-lg-offset-3">
+  <p>You are logged in as {{$root.authUser.name}}</p>
+  <a href="" ng-click="logout()">Logout <span class="fa fa-sign-out"></span></a>
 </div>

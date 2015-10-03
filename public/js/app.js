@@ -1,7 +1,11 @@
 'use strict';
 
-angular.module('myApp', ['ngRoute'])
-    .config(function($routeProvider, $locationProvider) {
+angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'oc.lazyLoad'])
+    .config(function($routeProvider, $locationProvider, $ocLazyLoadProvider) {
+        $ocLazyLoadProvider.config({
+            debug: false,
+            events: true,
+        });
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
@@ -19,7 +23,31 @@ angular.module('myApp', ['ngRoute'])
                 templateUrl: 'views/todo.html',
                 controller: 'ToDoController',
                 resolve: {
-                    factory: checkRouting
+                    factory: checkRouting("user")
+                }
+            })
+            .when('/account', {
+                templateUrl: 'views/account/index.html',
+                controller: 'AccountController',
+                resolve: {
+                    factory: checkRouting("user")
+                }
+            })            
+            .when('/admin', {
+                templateUrl: 'views/admin/index.html',
+                controller: 'AdminController',
+                resolve: {
+                    factory: checkRouting("admin"),
+                    loadMyFiles: function($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'myApp',
+                            files: [
+                                'js/directives/sidebar/sidebar.js',
+                                'js/directives/chat/chat.js',
+                                'js/directives/dashboard/stats/stats.js'
+                            ]
+                        })
+                    }
                 }
             })
             .otherwise({
@@ -37,25 +65,46 @@ angular.module('myApp', ['ngRoute'])
         });
     });
 
-var checkRouting= function ($q, $rootScope, $location, $http) {
-    if ($rootScope.authUser) {
-        return true;
-    } else {
-        var deferred = $q.defer();
-        $http.post("/api/user")
-            .success(function (response) {
-                if(response){
-                    $rootScope.authUser = response;
-                    deferred.resolve(true);
-                }else{
+var checkRouting = function(reqRole) {
+    return function($q, $rootScope, $location, $http) {
+        if ($rootScope.authUser) {
+            if ($rootScope.authUser.role == "admin" || $rootScope.authUser.role == reqRole) {
+                return true;
+            } else {
+                $location.path("/login").search({
+                    error: 'Insufficient permissions'
+                });
+                return false;
+            }
+
+        } else {
+            var deferred = $q.defer();
+            $http.get("/api/read/user")
+                .success(function(response) {
+                    if (response) {
+                        $rootScope.authUser = response;
+                        if ($rootScope.authUser.role == "admin" || $rootScope.authUser.role == reqRole) {
+                            deferred.resolve(true);
+                        } else {
+                            deferred.reject();
+                            $location.path("/login").search({
+                                error: 'Insufficient permissions'
+                            });
+                        }
+                    } else {
+                        deferred.reject();
+                        $location.path("/login").search({
+                            error: 'You must login to view that page.'
+                        });
+                    }
+                })
+                .error(function() {
                     deferred.reject();
-                    $location.path("/login").search({error: 'You must login to view that page.'});
-                }
-            })
-            .error(function () {
-                deferred.reject();
-                $location.path("/login").search({error: 'You must login to view that page.'});;
-             });
-        return deferred.promise;
-    }
+                    $location.path("/login").search({
+                        error: 'You must login to view that page.'
+                    });;
+                });
+            return deferred.promise;
+        }
+    };
 };

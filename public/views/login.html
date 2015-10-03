@@ -1,6 +1,6 @@
-<div class="col-lg-6 col-lg-offset-3">
+<div ng-if="$root.authUser == null" class="col-lg-6 col-lg-offset-3">
   <h2>Login</h2>
-  <div ng-if="loginError.length &gt; 0" class="alert alert-danger">{{loginError}}</div>
+  <div ng-if="loginError.length > 0" class="alert alert-danger">{{loginError}}</div>
   <form ng-submit="login()" name="form" role="form">
     <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
       <label for="username">Username:</label>
@@ -19,4 +19,9 @@
     </div>
     
   </form>
+</div>
+<div ng-if="$root.authUser != null" class="col-lg-6 col-lg-offset-3">
+  <div ng-if="loginError.length > 0" class="alert alert-danger">{{loginError}}</div>
+  <p>You are logged in as {{$root.authUser.name}}</p>
+  <a href="" ng-click="logout()">Logout <span class="fa fa-sign-out"></span></a>
 </div>

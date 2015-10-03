@@ -20,26 +20,27 @@ html(ng-app="myApp")
     nav.navbar.navbar-default(ng-controller="NavbarController")
         .container-fluid
             .navbar-header
-                .logo.pull-left
-                    button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
-                        span.sr-only Toggle navigation
-                        span.icon-bar
-                        span.icon-bar
-                        span.icon-bar
-                    a.nav-brand(href="/") #{app.name}
-            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+                button.pull-right.navbar-toggle.collapsed(type='button',  ng-init="navCollapsed = true", ng-click="navCollapsed = !navCollapsed")
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a.pull-left.nav-brand(href="/") #{app.name}
+            .navbar-responsive-collapse.collapse.navbar-collapse(collapse="navCollapsed")
                 ul.nav.navbar-nav.navbar-right(ng-if="$root.authUser != null")
                     li
-                        a Logged in as {{$root.authUser.name}}
+                        a.text-center(href="/account") {{$root.authUser.name}}
+                    li(ng-if="isAdmin()")
+                        a.text-center(href="/admin") Control Panel
                     li
-                        a(href="" ng-click="logout()") Logout 
+                        a.text-center(href="" ng-click="logout()") Logout 
                             span.fa.fa-sign-out
                 ul.nav.navbar-nav.navbar-right(ng-if="$root.authUser == null")
                     li
-                        a(href="/login")  Login 
+                        a.text-center(href="/login")  Login 
                             span.fa.fa-sign-in
                     li  
-                        a(href="/signup")  Signup 
+                        a.text-center(href="/signup")  Signup 
                             span.fa.fa-pencil-square-o
     
     .container-fluid
@@ -48,11 +49,20 @@ html(ng-app="myApp")
     footer
         p.text-center &copy; 2015 #{app.name}
 
+    script(type='text/javascript' src='/bower_components/jquery/dist/jquery.min.js')
     script(type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js')
-    script(type='text/javascript' src='//code.angularjs.org/1.4.7/angular-route.min.js')
+    script(type='text/javascript' src='https://code.angularjs.org/1.4.7/angular-route.min.js')
+    script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap.min.js')
+    script(type='text/javascript' src='/bower_components/oclazyload/dist/ocLazyLoad.js')
+    script(type='text/javascript' src='/bower_components/Chart.js/Chart.min.js')
+    script(type='text/javascript' src='/bower_components/metisMenu/dist/metisMenu.min.js')
     script(src="/js/app.js")
     script(src="/js/directives/directives.js")
+    script(src="/js/directives/dashboard/stats/stats.js")
     script(src="/js/controllers/controllers.js")
     script(src="/js/services/services.js")
+
+    script.
+        $('#side-menu').metisMenu();
 
     block body_end

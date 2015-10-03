@@ -1,0 +1,91 @@
+
+<div class="container">
+	<div class="row">
+		<h1 class="text-center">My Account</h1>
+		<div class="col-lg-3">
+		    <div class="panel panel-primary">
+		        <div class="panel-heading">
+		            <div class="panel-title text-center">{{$root.authUser.name}}</div>
+		        </div>
+
+		        <div class="navbar-default sidebar" role="navigation">
+		            <div class="sidebar-nav navbar-collapse">
+		                <ul class="nav in" id="side-menu">
+					      <li ng-class="{active: currentTab == 0}"><a href="" ng-click="setTab(0)" class="text-center">Settings</a></li>
+					      <li ng-class="{active: currentTab == 1}"><a href="" ng-click="setTab(1)" class="text-center">Tab 2</a></li>
+		                </ul>
+		            </div>
+		            <!-- /.sidebar-collapse -->
+
+		        </div> 
+		    </div>			
+		</div>
+		<div class="col-lg-9">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<div ng-if="currentTab == 0" class="panel-title text-center">Settings</div>
+					<div ng-if="currentTab == 1" class="panel-title text-center">Tab 2</div>
+				</div>
+				<div ng-if="currentTab == 0" class="panel-body">
+					<div class="row">
+						<div class="col-md-5">
+							<img class="img-responsive" src="http://placehold.it/350x350">
+						</div>
+						<div class="col-md-7">
+							<h2 class="text-center">Profile</h2>
+							<p><strong>Username: </strong> {{$root.authUser.name}}</p>
+							<p><strong>Email: </strong> {{$root.authUser.email}}</p>
+							<p><strong>Role: </strong> {{$root.authUser.role}}</p>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-md-7 col-md-offset-3">
+							<div ng-if="error.length > 0" class="alert alert-danger">{{error}}</div>
+							<div ng-if="success.length > 0" class="alert alert-success">{{success}}</div>
+							<h3>Change Password</h3>
+							<form ng-submit="updatePassword()" name="form" role="form">
+								<div class="form-group">
+									<label for="confirmpassword">Current Password:</label>
+									<input type="password" name="confirmpassword" ng-model="user.password" placeholder="Current Password" class="form-control" required/>
+								</div>
+								<div class="form-group">
+									<label for="newpassword">New Password:</label>
+									<input type="password" name="newpassword" ng-model="user.newpassword" placeholder="New Password" class="form-control" required/>
+								</div>
+								<div class="form-group" ng-class="{ 'has-error': form.newrepassword.$error.compareTo }">
+									<label for="newrepassword">Retype New Password:</label>
+									<input type="password" name="newrepassword" ng-model="user.newrepassword" placeholder="Retype Password" class="form-control" compare-to="user.newpassword" required/>
+									<span ng-show="form.newrepassword.$error.compareTo" class="help-block">Passwords do not match!</span>
+								</div>
+							    <div class="form-actions">
+							      <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid || dataLoading">Update</button>
+							      <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+							    </div>								
+							</form>
+							<hr>
+							<h3>Change Email</h3>
+							<form ng-submit="updateEmail()" name="form" role="form">
+								<div class="form-group">
+									<label for="confirmpassword">Current Password:</label>
+									<input type="password" name="confirmpassword" ng-model="user.emailpassword" placeholder="Current Password" class="form-control" required/>
+								</div>								
+								<div class="form-group">
+									<label for="email">Email:</label>
+									<input type="text" name="email" ng-model="user.email" placeholder="New Email" class="form-control" required/>
+								</div>							
+								<div class="form-actions">
+							      <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid || dataLoading">Update</button>
+							      <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+							    </div>	
+							</form>
+						</div>
+					</div>
+				</div>
+				<div ng-if="currentTab == 1" class="panel-body">
+					<p>tab2</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
