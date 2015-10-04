@@ -42,7 +42,6 @@ angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'oc.lazyLoad'])
                         return $ocLazyLoad.load({
                             name: 'myApp',
                             files: [
-                                'js/directives/sidebar/sidebar.js',
                                 'js/directives/chat/chat.js',
                                 'js/directives/dashboard/stats/stats.js'
                             ]

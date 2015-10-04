@@ -9,7 +9,8 @@
                 <ul class="nav in" id="side-menu">
                     <li ng-class="{active: currentTab == 0}"><a href="" ng-click="setTab(0)"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
                     <li ng-class="{active: currentTab == 1}"><a href="" ng-click="setTab(1)"><i class="fa fa-table fa-fw"></i> Users</a></li>
-                    <li ng-class="{active: currentTab == 2}"><a href="" ng-click="setTab(2)"><i class="fa fa-edit fa-fw"></i> Messaging</a></li>
+                    <li ng-class="{active: currentTab == 2}"><a href="" ng-click="setTab(2)"><i class="fa fa-edit fa-fw"></i> Mass Mail</a></li>
+                    <li ng-class="{active: currentTab == 3}"><a href="" ng-click="setTab(3)"><i class="fa fa-cog fa-fw"></i> Settings</a></li>
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->
@@ -25,6 +26,10 @@
 <div ng-if="currentTab == 1" ng-include="'/views/admin/users.html'" class="col-md-10"></div>
 <!-- /Users -->
 
-<!-- Messaging -->
+<!-- Mass Mail -->
 <div ng-if="currentTab == 2" ng-include="'/views/admin/messaging.html'" class="col-md-10"></div>
-<!-- /Messaging -->
+<!-- /Mass Mail -->
+
+<!-- Settings -->
+<div ng-if="currentTab == 3" ng-include="'/views/admin/settings.html'" class="col-md-10"></div>
+<!-- /Settings -->

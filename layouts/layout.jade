@@ -1,14 +1,15 @@
 doctype html
 html(ng-app="myApp")
   head
-    title= (app.name + " - " + app.desc)
+    title= (app.name + " - " + app.slogan)
     base(href="/")
     meta(charset="utf-8")
     meta(name="author" content="" + app.author + "")
-    meta(name="keywords" content="")
+    meta(name="description" content="" + app.desc + "")
+    meta(name="keywords" content="" + app.keywords + "")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
     meta(name='viewport', content='width=device-width, initial-scale=1')
-
+    link(rel="shortcut icon" href="/favicon.ico")
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css")
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css")
     link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")

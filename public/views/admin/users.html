@@ -1,2 +1,51 @@
 <div class="row">
+	<div class="col-lg-8">
+		<table class="table">
+			<thead>
+				<tr>
+					<td style="width: 50px;">#</td>
+					<td>Username</td>
+					<td>Email</td>
+					<td>Role</td>
+					<td style="width: 50px;">Edit</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="user in users track by $index">
+					<td style="width: 50px;">{{$index+1}}</td>
+					<td>{{user.name}}</td>
+					<td>{{user.email}}</td>
+					<td>{{user.role}}</td>
+					<td style="width: 50px;"><button class="btn" ng-click="setSelectedUser($index)">Edit</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-lg-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="panel-title text-center">Edit {{selectedUser.name}}</div>
+			</div>
+			<div class="panel-body">
+				<div ng-if="success.length > 0" class="alert alert-success">{{success}}</div>
+				<form ng-submit="editUser()" name="form" role="form">
+					<div class="form-group">
+						<label for="email">Email:</label>
+						<input type="email" ng-model="selectedUser.email" class="form-control" required/>
+					</div>
+					<div class="form-group">
+						<label for="role">Role:</label>
+						<select class="form-control" ng-model="selectedUser.role" name="role" id="role">
+							<option ng-selected="selectedUser.role == 'user'" value="user">User</option>
+							<option ng-selected="selectedUser.role == 'admin'" value="admin">Admin</option>
+						</select>
+					</div>
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary" ng-disabled="form.$invalid || dataLoading">Update</button>
+		      			<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>

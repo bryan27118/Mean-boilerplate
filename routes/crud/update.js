@@ -34,6 +34,19 @@ router.post('/user/email', ensureAuthenticated, function(req, res) {
 
 });
 
+router.post('/user/role/:id', ensureAuthenticated, function(req, res) {
+    var id = req.params.id;
+
+    User.update({
+        _id: id
+    }, {
+        role: req.body.role
+    }, function(err, numberAffected, doc) {
+        res.json(doc);
+    });
+
+});
+
 router.post('/todo/done/:id', function(req, res) {
     var id = req.params.id;
 

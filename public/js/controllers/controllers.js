@@ -169,12 +169,44 @@ app.controller('AccountController', ['$scope', 'Auth', '$http',
     }
 ]);
 
-app.controller('AdminController', ['$scope', 'Auth',
-    function($scope, Auth) {
+app.controller('AdminController', ['$scope', 'Auth', '$http',
+    function($scope, Auth, $http) {
         $scope.currentTab = 0;
+        $scope.users = {};
+        $scope.selectedUserIndex = 0;
+        $scope.selectedUser = {};
+        $scope.success = "";
+        $scope.dataLoading = false;
 
         $scope.setTab = function(tab){
+            if(tab == 1){
+                refreshUsers();
+            }
             $scope.currentTab = tab;
+        }
+
+        $scope.setSelectedUser = function(index){
+            $scope.success = "";
+            $scope.selectedUserIndex = index;
+            $scope.selectedUser = $scope.users[index];
+        }
+
+        $scope.editUser = function(){
+            $scope.success = "";
+            $scope.dataLoading = true;
+            console.log($scope.selectedUser.role);
+            $http.post('/api/update/user/role/' + $scope.selectedUser._id, $scope.selectedUser).success(function(res) {
+                $scope.dataLoading = false;
+                $scope.success = "User Updated";
+                $scope.users[$scope.selectedUser] = res;
+            });
+        }
+
+        var refreshUsers = function() {
+            $http.get('/api/read/users/all').success(function(res) {
+                $scope.users = res;
+                $scope.selectedUser = $scope.users[$scope.selectedUserIndex];
+            });
         }
     }
 ]);

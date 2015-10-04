@@ -29,7 +29,9 @@ module.exports = {
     hostname: 'http://localhost:3000',
     app: {
         name: 'MEAN Boilerplate',
-        desc: 'Production',
+        slogan: 'Production',
+        desc: 'Starter project, using the MEAN stack, that can support large web applications.',
+        keywords: "Angular, MEAN Stack",
         author: 'Bryan C.'
     },
     logging: {
