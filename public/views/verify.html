@@ -1,0 +1,6 @@
+<div ng-if="$root.authUser != null" class="col-lg-6 col-lg-offset-3">
+	<div ng-if="error.length > 0" class="alert alert-danger">{{error}}</div>
+	<div ng-if="success.length > 0" class="alert alert-success">{{success}}</div>
+	<button ng-if="$root.authUser.verifiedEmail == false" class="btn btn-primary" ng-click="verifyEmail()">Verify</button>
+	<div ng-if="$root.authUser.verifiedEmail == true" class="alert alert-success">Your email is already verified.</div>
+</div>

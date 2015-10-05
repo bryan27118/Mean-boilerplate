@@ -16,6 +16,11 @@ thead td{
     outline-color: green;
 }
 
+textarea{
+    resize: vertical;
+    width: 100%;
+}
+
 li.active{
 	background-color: #EEEEEE;
 }

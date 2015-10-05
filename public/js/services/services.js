@@ -11,6 +11,7 @@ angular.module('myApp').factory('Auth', ['$q', '$http', '$location', '$rootScope
             $http.get('/api/read/user').success(function(user) {
                 if (user) {
                     $rootScope.authUser = user;
+                    $rootScope.authUser.createdAt = new Date(user.createdAt).toDateString();
                 }
 
                 deferred.resolve(user);

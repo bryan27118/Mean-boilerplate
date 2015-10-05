@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var utils = require("../controllers/utilities.js");
 var Task = require("../../models/Task");
 var User = require("../../models/User");
 
-router.post('/user/password', ensureAuthenticated, function(req, res) {
+router.post('/user/password', utils.ensureAuthenticated, function(req, res) {
 
     if(req.body.newpassword != req.body.newrepassword){
         res.send("Passwords do not match");
@@ -21,7 +22,7 @@ router.post('/user/password', ensureAuthenticated, function(req, res) {
 
 });
 
-router.post('/user/email', ensureAuthenticated, function(req, res) {
+router.post('/user/email', utils.ensureAuthenticated, function(req, res) {
 
     req.user.checkPassword(req.body.emailpassword, function(err, response){
         if(response){
@@ -34,13 +35,36 @@ router.post('/user/email', ensureAuthenticated, function(req, res) {
 
 });
 
-router.post('/user/role/:id', ensureAuthenticated, function(req, res) {
+router.post('/user/settings', utils.ensureAuthenticated, function(req, res) {
+    User.update({
+        _id: req.user._id
+    }, {
+        allowEmail: req.body.allowemail
+    }, function(err, numberAffected, doc) {
+        res.send("true")
+    });
+});
+
+router.post('/user/role/:id', utils.ensureAuthenticated, utils.ensureAdmin, function(req, res) {
     var id = req.params.id;
 
     User.update({
         _id: id
     }, {
         role: req.body.role
+    }, function(err, numberAffected, doc) {
+        res.json(doc);
+    });
+
+});
+
+router.post('/user/email/:id', utils.ensureAuthenticated, utils.ensureAdmin, function(req, res) {
+    var id = req.params.id;
+
+    User.update({
+        _id: id
+    }, {
+        email: req.body.email
     }, function(err, numberAffected, doc) {
         res.json(doc);
     });
@@ -72,10 +96,3 @@ router.post('/todo/notdone/:id', function(req, res) {
 });
 
 module.exports = router;
-
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/');
-}

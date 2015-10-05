@@ -26,6 +26,13 @@ angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'oc.lazyLoad'])
                     factory: checkRouting("user")
                 }
             })
+            .when('/verify', {
+                templateUrl: 'views/verify.html',
+                controller: 'VerificationController',
+                resolve: {
+                    factory: checkRouting("user")
+                }
+            })
             .when('/account', {
                 templateUrl: 'views/account/index.html',
                 controller: 'AccountController',
@@ -82,6 +89,7 @@ var checkRouting = function(reqRole) {
                 .success(function(response) {
                     if (response) {
                         $rootScope.authUser = response;
+                        $rootScope.authUser.createdAt = new Date($rootScope.authUser.createdAt).toDateString();
                         if ($rootScope.authUser.role == "admin" || $rootScope.authUser.role == reqRole) {
                             deferred.resolve(true);
                         } else {

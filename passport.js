@@ -4,6 +4,11 @@ var https = require('https');
 // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
 
+//Load Config
+var env = process.env.NODE_ENV || "development";
+var config = require('./config/' + env + '.js');
+var utils = require("./routes/controllers/utilities.js");
+
 // load up the user model
 var User = require('./models/User.js');
 var bcrypt = require('bcrypt-nodejs');
@@ -60,13 +65,17 @@ module.exports = function(passport) {
                 } else {
                     console.log("Creating");
                     var salt = bcrypt.genSaltSync(10);
+                    var token = bcrypt.genSaltSync(10);
                     password = bcrypt.hashSync(password,salt);
                     //create
                     User.create({
                         name: username,
                         password: password,
-                        email: req.body.email
+                        email: req.body.email,
+                        token: token,
+                        allowEmail: true
                     }, function(err, newUser) {
+                        utils.sendEmailtoUser(newUser._id, "Verify your email address - MEAN", "Thanks for signing up! Click the following link to verify your email address: " + config.hostname + "/verify?token=" + token + "");
                         return done(null, newUser);
                     });
                 }

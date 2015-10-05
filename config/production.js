@@ -27,6 +27,7 @@ module.exports = {
     */
     },
     hostname: 'http://localhost:3000',
+    port: 3000,
     app: {
         name: 'MEAN Boilerplate',
         slogan: 'Production',
@@ -74,6 +75,7 @@ module.exports = {
         }
     },
     emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
+    logo: '',
     mailer: {
         service: 'SERVICE_PROVIDER',
         auth: {

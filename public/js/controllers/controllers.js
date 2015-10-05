@@ -74,6 +74,28 @@ app.controller('MainController', ['$scope', 'Auth',
     }
 ]);
 
+app.controller('VerificationController', ['$scope', 'Auth', '$http','$routeParams',
+    function($scope, Auth, $http, $routeParams) {
+        $scope.token = $routeParams.token;
+        $scope.success = "";
+        $scope.error = "";
+
+        $scope.verifyEmail = function(){
+            $scope.success = "";
+            $scope.error = "";
+            $http.post('/api/verify', {token: $scope.token}).success(function(res) {
+                if(res == "true"){
+                    $scope.success = "Email verified";
+                    Auth.requestUser();
+                }else{
+                    $scope.error = res;
+                }
+            });
+        }
+        
+    }
+]);
+
 app.controller('ToDoController', ['$scope', '$http',
     function($scope, $http) {
         var refresh = function() {
@@ -166,6 +188,41 @@ app.controller('AccountController', ['$scope', 'Auth', '$http',
                 $scope.user = {};
             });
         }
+
+        $scope.updateSettings = function(){
+            
+            if($scope.user.allowemail == null){
+                $scope.user.allowemail = false;
+            }
+
+            $scope.error = "";
+            $scope.success = "";
+            $scope.dataLoading = true;
+
+            $http.post('/api/update/user/settings', $scope.user).success(function(res) {
+                $scope.dataLoading = false;
+                if(res == 'true'){
+                    Auth.requestUser();
+                    $scope.success = "Settings Updated";
+                }else{
+                    $scope.error = res;
+                }
+                $scope.user = {};
+            });
+
+        }
+
+        $scope.resendVerify = function(){
+            $scope.success = "";
+            $http.post('/api/reverify').success(function(res) {
+                if(res == 'true'){
+                    Auth.requestUser();
+                    $scope.success = "Email Sent";
+                }else{
+                    $scope.error = res;
+                }
+            });
+        }
     }
 ]);
 
@@ -175,11 +232,15 @@ app.controller('AdminController', ['$scope', 'Auth', '$http',
         $scope.users = {};
         $scope.selectedUserIndex = 0;
         $scope.selectedUser = {};
+        $scope.userEmail = {};
+        $scope.massEmail = {};
         $scope.success = "";
         $scope.dataLoading = false;
 
         $scope.setTab = function(tab){
-            if(tab == 1){
+            $scope.success = "";
+            $scope.dataLoading = false;
+            if(tab == 1 || tab == 2){
                 refreshUsers();
             }
             $scope.currentTab = tab;
@@ -187,6 +248,8 @@ app.controller('AdminController', ['$scope', 'Auth', '$http',
 
         $scope.setSelectedUser = function(index){
             $scope.success = "";
+            $scope.dataLoading = false;
+            $scope.userEmail = {};
             $scope.selectedUserIndex = index;
             $scope.selectedUser = $scope.users[index];
         }
@@ -194,15 +257,40 @@ app.controller('AdminController', ['$scope', 'Auth', '$http',
         $scope.editUser = function(){
             $scope.success = "";
             $scope.dataLoading = true;
-            console.log($scope.selectedUser.role);
             $http.post('/api/update/user/role/' + $scope.selectedUser._id, $scope.selectedUser).success(function(res) {
+                $http.post('/api/update/user/email/' + $scope.selectedUser._id, $scope.selectedUser).success(function(res) {
+                    $scope.dataLoading = false;
+                    $scope.success = "User Updated";
+                    $scope.users[$scope.selectedUser] = res;
+
+                });
+            });
+        }
+
+        $scope.sendMail = function(){
+            $scope.success = "";
+            $scope.dataLoading = true;
+            $http.post('/api/mail/user/' + $scope.selectedUser._id, {subject: $scope.userEmail.subject, message: $scope.userEmail.message}).success(function(res) {
+                $scope.success = "Message Sent";
+                $scope.userEmail = {};
                 $scope.dataLoading = false;
-                $scope.success = "User Updated";
-                $scope.users[$scope.selectedUser] = res;
+            });
+        }
+
+        $scope.massMail = function(){
+            $scope.success = "";
+            $scope.dataLoading = true;
+            $http.post('/api/mail/all', {subject: $scope.massEmail.subject, message: $scope.massEmail.message}).success(function(res) {
+                $scope.success = "Message Sent";
+                $scope.massEmail = {};
+                $scope.dataLoading = false;
             });
         }
 
         var refreshUsers = function() {
+            $scope.success = "";
+            $scope.selectedUserIndex = 0;
+            $scope.selectedUser = {};
             $http.get('/api/read/users/all').success(function(res) {
                 $scope.users = res;
                 $scope.selectedUser = $scope.users[$scope.selectedUserIndex];

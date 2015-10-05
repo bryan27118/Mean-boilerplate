@@ -17,6 +17,8 @@ mongoose.connect(config.db);
 //App configuration
 app.set('views', path.join(__dirname, 'layouts'));
 app.set('view engine', 'jade');
+//app.use(require('prerender-node').set('prerenderServiceUrl', '<new url>'));
+app.use(require("prerender-node").set('prerenderToken', 'FbmJpFz8bIO0C5NOP3D9'));
 app.use(session({ secret: config.secret, resave: true, saveUninitialized: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -31,5 +33,5 @@ require('./passport.js')(passport);
 //Define routes
 app.use(require('./routes')(passport));
 
-app.listen(3000);
-console.log("Server running on port 3000");
+app.listen(config.port);
+console.log("Server running on port " + config.port);

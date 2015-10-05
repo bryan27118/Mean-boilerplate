@@ -7,6 +7,7 @@
 		<p><strong>Username: </strong> {{$root.authUser.name}}</p>
 		<p><strong>Email: </strong> {{$root.authUser.email}}</p>
 		<p><strong>Role: </strong> {{$root.authUser.role}}</p>
+		<p><strong>Joined On: </strong> {{$root.authUser.createdAt}}</p>
 	</div>
 </div>
 <hr>
@@ -14,6 +15,18 @@
 	<div class="col-md-7 col-md-offset-3">
 		<div ng-if="error.length > 0" class="alert alert-danger">{{error}}</div>
 		<div ng-if="success.length > 0" class="alert alert-success">{{success}}</div>
+		<h3>Change Settings</h3>
+		<form ng-submit="updateSettings()" name="form3" role="form">
+			<div class="form-group">
+				<label for="mailme">Get Email Notifications: </label>
+				<input type="checkbox" name="mailme" ng-checked="$root.authUser.allowEmail == true" ng-model="user.allowemail"/>
+			</div>
+		    <div class="form-actions">
+		      <button type="submit" class="btn btn-primary" ng-disabled="form3.$invalid || dataLoading">Update</button>
+		      <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+		    </div>								
+		</form>
+		<hr>		
 		<h3>Change Password</h3>
 		<form ng-submit="updatePassword()" name="form" role="form">
 			<div class="form-group">
@@ -36,6 +49,7 @@
 		</form>
 		<hr>
 		<h3>Change Email</h3>
+		<strong ng-if="$root.authUser.verifiedEmail == false" style="color: red;">Not Verified <button ng-click="resendVerify()" class="btn btn-primary btn-sm">Resend</button></strong><strong ng-if="$root.authUser.verifiedEmail == true" style="color: green;">Verified</strong>
 		<form ng-submit="updateEmail()" name="form" role="form">
 			<div class="form-group">
 				<label for="confirmpassword">Current Password:</label>

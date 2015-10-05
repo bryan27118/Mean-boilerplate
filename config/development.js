@@ -12,6 +12,7 @@ module.exports = {
         debug: false
     },
     hostname: 'http://localhost:3000',
+    port: 3000,
     app: {
         name: 'MEAN Boilerplate',
         slogan: 'Development',
@@ -55,9 +56,10 @@ module.exports = {
             enabled: false
         }
     },
-    emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
+    emailFrom: 'mailer@meanboilerplate.com', // sender address like ABC <abc@example.com>
+    logo: '',
     mailer: {
-        service: 'SERVICE_PROVIDER', // Gmail, SMTP
+        service: 'SERVICE_PROVIDER',
         auth: {
             user: 'EMAIL_ID',
             pass: 'PASSWORD'
