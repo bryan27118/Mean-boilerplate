@@ -1,10 +1,30 @@
 var express = require('express');
 var router = express.Router();
-var utils = require("../controllers/utilities.js");
-var Task = require("../../models/Task");
 var User = require("../../models/User");
+var utils = require("./utilities.js");
 
-router.post('/user/password', utils.ensureAuthenticated, function(req, res) {
+//----------CREATE----------//
+
+//----------/CREATE----------//
+
+//----------READ----------//
+router.get('/', function(req, res) {
+    User.find({},function(err, users){
+        res.json(users);
+    });
+});
+
+router.get('/:id', function(req, res) {
+	var id = req.params.id;
+
+	User.findOne({_id: id}, function(err, user){
+		res.json(user);
+	});
+});
+//----------/READ----------//
+
+//----------UPDATE----------//
+router.post('/password', utils.ensureAuthenticated, function(req, res) {
 
     if(req.body.newpassword != req.body.newrepassword){
         res.send("Passwords do not match");
@@ -22,7 +42,7 @@ router.post('/user/password', utils.ensureAuthenticated, function(req, res) {
 
 });
 
-router.post('/user/email', utils.ensureAuthenticated, function(req, res) {
+router.post('/email', utils.ensureAuthenticated, function(req, res) {
 
     req.user.checkPassword(req.body.emailpassword, function(err, response){
         if(response){
@@ -35,7 +55,7 @@ router.post('/user/email', utils.ensureAuthenticated, function(req, res) {
 
 });
 
-router.post('/user/settings', utils.ensureAuthenticated, function(req, res) {
+router.post('/settings', utils.ensureAuthenticated, function(req, res) {
     User.update({
         _id: req.user._id
     }, {
@@ -45,7 +65,7 @@ router.post('/user/settings', utils.ensureAuthenticated, function(req, res) {
     });
 });
 
-router.post('/user/role/:id', utils.ensureAuthenticated, utils.ensureAdmin, function(req, res) {
+router.post('/role/:id', utils.ensureAuthenticated, utils.ensureAdmin, function(req, res) {
     var id = req.params.id;
 
     User.update({
@@ -58,7 +78,7 @@ router.post('/user/role/:id', utils.ensureAuthenticated, utils.ensureAdmin, func
 
 });
 
-router.post('/user/email/:id', utils.ensureAuthenticated, utils.ensureAdmin, function(req, res) {
+router.post('/email/:id', utils.ensureAuthenticated, utils.ensureAdmin, function(req, res) {
     var id = req.params.id;
 
     User.update({
@@ -70,29 +90,10 @@ router.post('/user/email/:id', utils.ensureAuthenticated, utils.ensureAdmin, fun
     });
 
 });
+//----------/UPDATE----------//
 
-router.post('/todo/done/:id', function(req, res) {
-    var id = req.params.id;
+//----------DELETE----------//
 
-    Task.update({
-        _id: id
-    }, {
-        status: 1
-    }, function(err, numberAffected, doc) {
-        res.json(doc);
-    });
-});
-
-router.post('/todo/notdone/:id', function(req, res) {
-    var id = req.params.id;
-
-    Task.update({
-        _id: id
-    }, {
-        status: 0
-    }, function(err, numberAffected, doc) {
-        res.json(doc);
-    });
-});
+//----------/DELETE----------//
 
 module.exports = router;

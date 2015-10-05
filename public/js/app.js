@@ -85,7 +85,7 @@ var checkRouting = function(reqRole) {
 
         } else {
             var deferred = $q.defer();
-            $http.get("/api/read/user")
+            $http.get("/auth/user")
                 .success(function(response) {
                     if (response) {
                         $rootScope.authUser = response;
