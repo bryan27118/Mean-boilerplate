@@ -26,7 +26,7 @@ angular.module('myApp').factory('Auth', ['$q', '$http', '$location', '$rootScope
             return $rootScope.authUser;
         }
 
-        authService.exists = function() {
+        authService.isLoggedIn = function() {
             return $rootScope.authUser != null;
         }
 

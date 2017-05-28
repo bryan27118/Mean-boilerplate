@@ -65,6 +65,10 @@ app.controller('NavbarController', ['$scope', '$location', 'Auth',
         $scope.isAdmin = function(){
             return Auth.isAdmin();
         }
+
+        $scope.isLoggedIn = function(){
+            return Auth.isLoggedIn();
+        }
     }
 ]);
 

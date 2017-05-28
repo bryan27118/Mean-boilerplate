@@ -29,7 +29,8 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 //passport configuration
-require('./passport.js')(passport); 
+require('./passport.js')(passport);
+
 //Define routes
 app.use(require('./routes')(passport));
 
