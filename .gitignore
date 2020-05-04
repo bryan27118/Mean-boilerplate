@@ -2,3 +2,5 @@
 /public/bower_components/*
 /config/*
 config/
+
+package-lock.json
