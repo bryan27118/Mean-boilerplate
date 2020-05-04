@@ -1,17 +1,17 @@
 {
-  "name": "MeanBoilerplate",
+  "name": "TwitchRadar",
   "main": "server.js",
   "dependencies": {
-    "express" : "~4.5.1",
-    "mongoose" : "~4.4",
-    "body-parser" : "~1.4.2",
-    "method-override" : "~2.0.2",
-    "bcrypt-nodejs" : "*",
-    "express-session" : "*", 
-    "jade" : "*",
-    "nodemailer" : "*",
-    "passport" : "*",
-    "passport-local" : "*",
-    "prerender-node" : "*"
+    "express": "~4.5.1",
+    "mongoose": "~4.4",
+    "body-parser": "~1.4.2",
+    "method-override": "~2.0.2",
+    "bcrypt-nodejs": "*",
+    "express-session": "*",
+    "jade": "*",
+    "nodemailer": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "prerender-node": "*"
   }
 }
